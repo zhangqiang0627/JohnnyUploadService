@@ -12,8 +12,14 @@ router.post('/bankWorker',  bankWorkerObject.array('file', bankWorkerFileMaxCoun
   let branchCode = req.query.branchCode;
   let dirName = req.query.dirName;
 
-  let fileUrl = `http://${host}/bankWorker/${bankCode}/${branchCode}/`;
+  let fileUrl = `http://${host}/bankWorker/`;
 
+  if(bankCode !== undefined){
+    fileUrl = fileUrl.concat(`${bankCode}/`);
+  }
+  if(branchCode !== undefined){
+    fileUrl = fileUrl.concat(`${branchCode}/`);
+  }
   if(dirName !== undefined){
     fileUrl = fileUrl.concat(`${dirName}/`);
   }

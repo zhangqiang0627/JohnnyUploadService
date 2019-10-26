@@ -9,14 +9,36 @@ let uploadRouter = require('./routes/upload');
 
 let app = express();
 
+// 域名白名单
+const ALLOW_ORIGIN = [
+  'http://localhost:3000',
+  'http://localhost:3001'
+];
+
 app.all('*', function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3001");
-  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("X-Powered-By", ' 3.2.1');
-  if (req.method === "OPTIONS") res.send(200);/*让options请求快速返回*/
-  else next();
+  let reqOrigin = req.headers.origin; // request响应头的origin属性
+  let isAllowed = reqOrigin === undefined;
+
+  ALLOW_ORIGIN.forEach(function (origin) {
+    if(origin === reqOrigin){
+      isAllowed = true;
+    }
+  });
+
+  if(isAllowed){
+    res.header("Access-Control-Allow-Origin", reqOrigin);
+    res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("X-Powered-By", ' 3.2.1');
+    if (req.method === "OPTIONS") {
+      /*让options请求快速返回*/
+      res.send(200);
+    }
+    else{
+      next();
+    }
+  }
 });
 
 // view engine setup

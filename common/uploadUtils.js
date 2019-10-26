@@ -14,7 +14,15 @@ exports.createBankWorkerObject = function (folders) {
       let bankCode = req.query.bankCode;
       let branchCode = req.query.branchCode;
       let dirName = req.query.dirName;
-      let uploadDir = path.join(rootDir, bankCode, branchCode);
+      let uploadDir = rootDir;
+
+      if(bankCode !== undefined){
+        uploadDir = path.join(uploadDir, bankCode);
+      }
+      if(branchCode !== undefined){
+        uploadDir = path.join(uploadDir, branchCode);
+      }
+
       if(dirName !== undefined){
         uploadDir = path.join(uploadDir, dirName);
       }
