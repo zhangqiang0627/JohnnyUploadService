@@ -41,7 +41,8 @@ exports.createBankWorkerObject = function (folders) {
 function makeDir(dirpath) {
   if (!fs.existsSync(dirpath)) {
     let pathtmp;
-    dirpath.split("/").forEach(function(dirname) {
+    let dirArray = dirpath.split(path.sep);
+    dirArray.forEach(function(dirname) {
       if (pathtmp) {
         pathtmp = path.join(pathtmp, dirname);
       }
