@@ -2,7 +2,7 @@ let express = require('express');
 let uploadUtils = require('../common/uploadUtils');
 let router = express.Router();
 
-let bankWorkerObject = uploadUtils.createBankWorkerObject(['public','bankWorker']);
+let bankWorkerObject = uploadUtils.createBankWorkerObject(['public']);
 const bankWorkerFileMaxCount = 10;
 
 router.post('/bankWorker',  bankWorkerObject.array('file', bankWorkerFileMaxCount), function(req,res,next){

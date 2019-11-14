@@ -11,20 +11,9 @@ exports.createBankWorkerObject = function (folders) {
 
   let storage = multer.diskStorage({
     destination: function (req, file, cb){
-      let bankCode = req.query.bankCode;
-      let branchCode = req.query.branchCode;
-      let dirName = req.query.dirName;
       let uploadDir = rootDir;
-
-      if(bankCode !== undefined){
-        uploadDir = path.join(uploadDir, bankCode);
-      }
-      if(branchCode !== undefined){
-        uploadDir = path.join(uploadDir, branchCode);
-      }
-
-      if(dirName !== undefined){
-        uploadDir = path.join(uploadDir, dirName);
+      for (let key in req.query) {
+        uploadDir = path.join(uploadDir, req.query[key]);
       }
       makeDir(uploadDir);
       cb(null, uploadDir);
