@@ -5,23 +5,12 @@ let router = express.Router();
 let bankWorkerObject = uploadUtils.createBankWorkerObject(['public']);
 const bankWorkerFileMaxCount = 10;
 
-router.post('/bankWorker',  bankWorkerObject.array('file', bankWorkerFileMaxCount), function(req,res,next){
+router.post('/',  bankWorkerObject.array('file', bankWorkerFileMaxCount), function(req,res,next){
   let fileUrlList = [];
-  let host = req.headers.host;
-  let bankCode = req.query.bankCode;
-  let branchCode = req.query.branchCode;
-  let dirName = req.query.dirName;
+  let fileUrl = `http://${req.headers.host}/`;
 
-  let fileUrl = `http://${host}/bankWorker/`;
-
-  if(bankCode !== undefined){
-    fileUrl = fileUrl.concat(`${bankCode}/`);
-  }
-  if(branchCode !== undefined){
-    fileUrl = fileUrl.concat(`${branchCode}/`);
-  }
-  if(dirName !== undefined){
-    fileUrl = fileUrl.concat(`${dirName}/`);
+  for (let key in req.query) {
+    fileUrl = fileUrl.concat(`${req.query[key]}/`);
   }
 
   req.files.forEach(function (file, index) {
